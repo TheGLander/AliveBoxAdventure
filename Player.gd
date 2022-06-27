@@ -31,7 +31,7 @@ onready var sprite = $Sprite
 #   (Ctrl Alt F) to quickly jump to the corresponding function.
 # - If you split the character into a state machine or more advanced pattern,
 #   you can easily move individual functions.
-func _physics_process(_delta):
+func _physics_process(dt):
 	# Play jump sound
 	#if Input.is_action_just_pressed("jump" + action_suffix) and is_on_floor():
 	#	sound_jump.play()
@@ -39,15 +39,16 @@ func _physics_process(_delta):
 	var direction = get_direction()
 
 	var is_jump_interrupted = Input.is_action_just_released("jump" + action_suffix) and _velocity.y < 0.0
-	_velocity = calculate_move_velocity(_velocity, direction, speed, is_jump_interrupted)
+	calculate_move_velocity(direction, is_jump_interrupted, dt)
 
 	var snap_vector = Vector2.ZERO
 	if direction.y == 0.0:
 		snap_vector = Vector2.DOWN * FLOOR_DETECT_DISTANCE
 	var is_on_platform = platform_detector.is_colliding()
 	_velocity = move_and_slide_with_snap(
-		_velocity, snap_vector, FLOOR_NORMAL, not is_on_platform, 4, 0.9, false
+		_velocity, snap_vector, FLOOR_NORMAL, true, 4, 0.9, false
 	)
+	print(is_on_floor())
 
 	# When the character’s direction changes, we want to to scale the Sprite accordingly to flip it.
 	# This will make Robi face left or right depending on the direction you move.
@@ -65,23 +66,29 @@ func get_direction():
 	)
 
 
+var frictionCoef = 0.1
+
 # This function calculates a new velocity whenever you need it.
 # It allows you to interrupt jumps.
 func calculate_move_velocity(
-		linear_velocity,
 		direction,
-		speed,
-		is_jump_interrupted
-	):
-	var velocity = linear_velocity
-	velocity.x = speed.x * direction.x
+		is_jump_interrupted,
+		dt
+):
+	if is_on_floor() and direction.x == 0 and _acceleration.x == 0:
+		_velocity.x 
+	_velocity.x *= (1 - frictionCoef)
+	_acceleration.x = speed.x * frictionCoef * direction.x
+	_acceleration.y = gravity * dt
+	_velocity.x += _acceleration.x
+	_velocity.y += _acceleration.y
 	if direction.y != 0.0:
-		velocity.y = speed.y * direction.y
+		_velocity.y = speed.y * direction.y
 	if is_jump_interrupted:
 		# Decrease the Y velocity by multiplying it, but don't set it to 0
 		# as to not be too abrupt.
-		velocity.y *= 0.6
-	return velocity
+		_velocity.y *= 0.6
+	return _velocity
 
 
 func get_new_animation(is_shooting = false):

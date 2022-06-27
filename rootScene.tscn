@@ -30,11 +30,15 @@ script = ExtResource( 3 )
 [node name="CloudLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 script = ExtResource( 4 )
 
+[node name="Platform2" parent="." instance=ExtResource( 2 )]
+position = Vector2( -302, 349 )
+
 [node name="Platform" parent="." instance=ExtResource( 2 )]
-position = Vector2( -394, 452 )
+position = Vector2( -16, 362 )
+rotation = -0.261799
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( -231, -39 )
+position = Vector2( 179, 28 )
 
 [node name="PlayerCamera" type="Camera2D" parent="Player"]
 position = Vector2( 39, 18 )
