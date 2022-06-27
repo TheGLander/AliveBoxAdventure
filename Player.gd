@@ -3,15 +3,17 @@ extends Actor
 
 
 const FLOOR_DETECT_DISTANCE = 20.0
+const VELOCITY_EPSILON = 5.0
 
 export(String) var action_suffix = ""
 
 onready var platform_detector = $PlatformDetector
-#onready var animation_player = $AnimationPlayer
+onready var animation_player = $AnimationPlayer
 #onready var shoot_timer = $ShootAnimation
 onready var sprite = $Sprite
 #onready var sound_jump = $Jump
 
+onready var last_on_floor = false
 
 # Physics process is a built-in loop in Godot.
 # If you define _physics_process on a node, Godot will call it every frame.
@@ -48,8 +50,17 @@ func _physics_process(dt):
 	_velocity = move_and_slide_with_snap(
 		_velocity, snap_vector, FLOOR_NORMAL, true, 4, 0.9, false
 	)
-	print(is_on_floor())
-
+	var do_anti_slide = false
+	for i in get_slide_count():
+		var collision = get_slide_collision(i)
+		var angle = -collision.get_angle(FLOOR_NORMAL)
+		var expected_speed = sin(angle) * gravity * dt / frictionCoef
+		#print("Vg = %s;V = %s;Vgx = %s" % [gravity * dt, _velocity.x, expected_speed])
+		if  direction.x == 0 and abs(_velocity.x - expected_speed) < 20:
+			do_anti_slide = true
+			break
+	if do_anti_slide:
+		_velocity.x = 0
 	# When the character’s direction changes, we want to to scale the Sprite accordingly to flip it.
 	# This will make Robi face left or right depending on the direction you move.
 	if direction.x != 0:
@@ -57,7 +68,12 @@ func _physics_process(dt):
 			sprite.scale.x = 1
 		else:
 			sprite.scale.x = -1
+	animation_player.play(get_animation())
 
+func get_animation():
+	if _velocity.x != 0:
+		return "moving"
+	return "idle"
 
 func get_direction():
 	return Vector2(
@@ -82,6 +98,9 @@ func calculate_move_velocity(
 	_acceleration.y = gravity * dt
 	_velocity.x += _acceleration.x
 	_velocity.y += _acceleration.y
+	#if (abs(_velocity.x) < VELOCITY_EPSILON):
+	#	_velocity.x = 0
+	#print(_velocity.x)
 	if direction.y != 0.0:
 		_velocity.y = speed.y * direction.y
 	if is_jump_interrupted:
