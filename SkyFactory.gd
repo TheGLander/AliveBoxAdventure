@@ -3,7 +3,7 @@ extends ParallaxLayer
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-const TOTAL_CLOUDS = 50
+const TOTAL_CLOUDS = 20
 var createdClouds = false
 
 # Called when the node enters the scene tree for the first time.
@@ -26,7 +26,7 @@ func createClouds():
 		var cloud: Sprite =  Sprite.new()
 		var texture = load("res://clouds/cloud%d.png" % (randi() % 3 + 1)) as StreamTexture
 		cloud.texture = texture
-		var cloudPos = vec_in_rect(Rect2(0, 0, 4000, 2048 )) * 2
+		var cloudPos = vec_in_rect(Rect2(0, 0, 4000, 2048))
 		cloud.position = cloudPos
 		cloud.scale = Vector2(0.5, 0.5)
 		self.add_child(cloud)

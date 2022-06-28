@@ -30,7 +30,7 @@ motion_mirroring = Vector2( 4000, 0 )
 
 [node name="BackgroundSprite" type="Sprite" parent="ParallaxBackground/SkyLayer"]
 position = Vector2( 4000, 0 )
-rotation = 1.5708
+rotation = 1.57079
 scale = Vector2( 1, 4000 )
 texture = SubResource( 2 )
 centered = false
@@ -67,4 +67,4 @@ smoothing_speed = 3.0
 script = ExtResource( 3 )
 
 [node name="Platform 0" parent="PlatformFactory" instance=ExtResource( 2 )]
-position = Vector2( 22, 393 )
+position = Vector2( 66, 398 )
