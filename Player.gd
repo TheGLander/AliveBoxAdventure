@@ -53,6 +53,9 @@ func _physics_process(dt):
 	var do_anti_slide = false
 	for i in get_slide_count():
 		var collision = get_slide_collision(i)
+		var collider = collision.collider
+		if collider.has_method("collision"):
+			collider.collision(self)
 		var angle = -collision.get_angle(FLOOR_NORMAL)
 		var expected_speed = sin(angle) * gravity * dt / frictionCoef
 		#print("Vg = %s;V = %s;Vgx = %s" % [gravity * dt, _velocity.x, expected_speed])
@@ -71,7 +74,7 @@ func _physics_process(dt):
 	animation_player.play(get_animation())
 
 func get_animation():
-	if _velocity.x != 0:
+	if abs(_velocity.x) > 20:
 		return "moving"
 	return "idle"
 
@@ -125,3 +128,9 @@ func get_new_animation(is_shooting = false):
 	if is_shooting:
 		animation_new += "_weapon"
 	return animation_new
+
+onready var hell = get_tree().root.get_node("Node2D/ParallaxBackground/HellLayer/Hell") as Sprite
+
+func _process(delta):
+	if position.y > hell.position.y:
+		get_tree().reload_current_scene()

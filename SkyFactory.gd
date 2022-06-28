@@ -1,6 +1,5 @@
 extends ParallaxLayer
 
-"""
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -25,12 +24,9 @@ func to_vec2(vec: Vector3):
 func createClouds():
 	for _i in range(TOTAL_CLOUDS):
 		var cloud: Sprite =  Sprite.new()
-		var texture = ImageTexture.new()
-		var image = Image.new()
-		image.load("res://clouds/cloud%d.png" % (randi() % 3))
-		texture.create_from_image(image)
+		var texture = load("res://clouds/cloud%d.png" % (randi() % 3 + 1)) as StreamTexture
 		cloud.texture = texture
-		var cloudPos = vec_in_rect(Rect2(0, 0, 1000, 1000)) * 2
+		var cloudPos = vec_in_rect(Rect2(0, 0, 4000, 2048 )) * 2
 		cloud.position = cloudPos
 		cloud.scale = Vector2(0.5, 0.5)
 		self.add_child(cloud)
@@ -38,4 +34,3 @@ func createClouds():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
-"""

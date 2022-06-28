@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/clould1.png-751995197253bcd5593a27670ba2686e.stex"
+path="res://.import/cloud1.png-32cc9167245a55729f7b080459f9027f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://clouds/clould1.png"
-dest_files=[ "res://.import/clould1.png-751995197253bcd5593a27670ba2686e.stex" ]
+source_file="res://clouds/cloud1.png"
+dest_files=[ "res://.import/cloud1.png-32cc9167245a55729f7b080459f9027f.stex" ]
 
 [params]
 
