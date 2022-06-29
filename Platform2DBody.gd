@@ -5,6 +5,7 @@ extends StaticBody2D
 # var a = 2
 # var b = "text"
 
+var platform_friction_coef = 0.1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

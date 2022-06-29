@@ -22,9 +22,11 @@ func create_platform(last: GeneratedPlatform, nextN: int):
 		new.position.y += rand_range(0, 130)
 	else:
 		new.position.y += rand_range(-90, 0)
-	if randf() > pow(0.8, nextN):
-		var max_rot = min(deg2rad(40), pow(1.1, nextN) - 1)
+	if randf() > pow(0.9, nextN):
+		var max_rot = min(deg2rad(30), pow(1.1, nextN) - 1)
 		new.rotation = rand_range(-max_rot, max_rot)
+	if randf() > pow(0.9, nextN):
+		new.set_cloudy(true)
 	new.position.y = clamp(new.position.y, 130, hell.position.y - 130)
 	new.connect("platform_seen", self, "on_platform_seen")
 	add_child(new)

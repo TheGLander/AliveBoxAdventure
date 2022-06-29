@@ -15,6 +15,7 @@ onready var sprite = $Sprite
 
 onready var last_on_floor = false
 
+var yeet_timeout = 0
 # Physics process is a built-in loop in Godot.
 # If you define _physics_process on a node, Godot will call it every frame.
 
@@ -44,26 +45,30 @@ func _physics_process(dt):
 	calculate_move_velocity(direction, is_jump_interrupted, dt)
 
 	var snap_vector = Vector2.ZERO
-	if direction.y == 0.0:
+	if abs(_velocity.y) < 20.0:
 		snap_vector = Vector2.DOWN * FLOOR_DETECT_DISTANCE
 	var is_on_platform = platform_detector.is_colliding()
 	_velocity = move_and_slide_with_snap(
-		_velocity, snap_vector, FLOOR_NORMAL, true, 4, 0.9, false
+		_velocity, snap_vector, FLOOR_NORMAL, false, 4, 0.9, false
 	)
-	var do_anti_slide = false
+	#var do_anti_slide = false
+	frictionCoef = 0.1
 	for i in get_slide_count():
 		var collision = get_slide_collision(i)
 		var collider = collision.collider
 		if collider.has_method("collision"):
 			collider.collision(self)
-		var angle = -collision.get_angle(FLOOR_NORMAL)
-		var expected_speed = sin(angle) * gravity * dt / frictionCoef
+		#var angle = -collision.get_angle(FLOOR_NORMAL)
+		#var expected_speed = sin(angle) * gravity * dt / frictionCoef
 		#print("Vg = %s;V = %s;Vgx = %s" % [gravity * dt, _velocity.x, expected_speed])
-		if  direction.x == 0 and abs(_velocity.x - expected_speed) < 20:
-			do_anti_slide = true
-			break
-	if do_anti_slide:
-		_velocity.x = 0
+		#if  direction.x == 0 and abs(_velocity.x - expected_speed) < 20:
+		#	do_anti_slide = true
+		if "platform_friction_coef" in collider:
+			frictionCoef = collider.platform_friction_coef
+		else:
+			frictionCoef = 0.1
+	#if do_anti_slide:
+	#	_velocity.x = 0
 	# When the character’s direction changes, we want to to scale the Sprite accordingly to flip it.
 	# This will make Robi face left or right depending on the direction you move.
 	if direction.x != 0:
@@ -86,6 +91,7 @@ func get_direction():
 
 
 var frictionCoef = 0.1
+var accels: Array = []
 
 # This function calculates a new velocity whenever you need it.
 # It allows you to interrupt jumps.
@@ -99,6 +105,8 @@ func calculate_move_velocity(
 	_velocity.x *= (1 - frictionCoef)
 	_acceleration.x = speed.x * frictionCoef * direction.x
 	_acceleration.y = gravity * dt
+	for accel in accels:
+		_acceleration += accel
 	_velocity.x += _acceleration.x
 	_velocity.y += _acceleration.y
 	#if (abs(_velocity.x) < VELOCITY_EPSILON):
@@ -133,4 +141,8 @@ onready var hell = get_tree().root.get_node("Node2D/ParallaxBackground/HellLayer
 
 func _process(delta):
 	if position.y > hell.position.y:
+		get_tree().reload_current_scene()
+	if yeet_timeout > 0:
+		yeet_timeout -= delta
+	if yeet_timeout > 0 and position.y < 0:
 		get_tree().reload_current_scene()

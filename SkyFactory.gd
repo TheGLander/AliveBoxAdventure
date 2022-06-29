@@ -24,7 +24,7 @@ func to_vec2(vec: Vector3):
 func createClouds():
 	for _i in range(TOTAL_CLOUDS):
 		var cloud: Sprite =  Sprite.new()
-		var texture = load("res://clouds/cloud%d.png" % (randi() % 3 + 1)) as StreamTexture
+		var texture = load("res://clouds/cloud%d.png" % (randi() % 4 + 1)) as StreamTexture
 		cloud.texture = texture
 		var cloudPos = vec_in_rect(Rect2(0, 0, 4000, 2048))
 		cloud.position = cloudPos

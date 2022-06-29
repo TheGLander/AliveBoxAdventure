@@ -9,6 +9,12 @@ signal platform_seen(platformN)
 # var b = "text"
 var platformN = 0
 
+var cloudy = false
+
+func set_cloudy(new_cloudy):
+	cloudy = new_cloudy
+	$EvilCloud.visible = cloudy
+	$Platform2DBody.platform_friction_coef = 0.01 if cloudy else 0.1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

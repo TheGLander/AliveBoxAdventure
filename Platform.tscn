@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://platforms/platform2.png" type="Texture" id=1]
 [ext_resource path="res://Platform2DBody.gd" type="Script" id=2]
+[ext_resource path="res://EvilCloud.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 160.5, 45.5 )
@@ -21,3 +22,7 @@ position = Vector2( 25, 134 )
 texture = ExtResource( 1 )
 centered = false
 offset = Vector2( -25, -134 )
+
+[node name="EvilCloud" parent="." instance=ExtResource( 3 )]
+visible = false
+position = Vector2( 160.5, -240 )
