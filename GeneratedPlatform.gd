@@ -10,11 +10,16 @@ signal platform_seen(platformN)
 var platformN = 0
 
 var cloudy = false
+var save_platform = false
 
 func set_cloudy(new_cloudy):
 	cloudy = new_cloudy
 	$EvilCloud.visible = cloudy
 	$Platform2DBody.platform_friction_coef = 0.01 if cloudy else 0.1
+
+func set_save_platform(new_save_platform):
+	save_platform = new_save_platform
+	$RainbowSprite.visible = save_platform
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -26,4 +31,4 @@ var touched = false
 func collision(with):
 	if not touched and with is Player:
 		touched = true
-		emit_signal("platform_seen", platformN)
+		emit_signal("platform_seen", self)

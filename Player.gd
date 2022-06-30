@@ -71,8 +71,9 @@ func _physics_process(dt):
 	#	_velocity.x = 0
 	# When the character’s direction changes, we want to to scale the Sprite accordingly to flip it.
 	# This will make Robi face left or right depending on the direction you move.
-	if direction.x != 0:
-		if direction.x > 0:
+	var x_controller = direction.x if direction.x != 0 else _velocity.x
+	if x_controller != 0:
+		if x_controller > 0:
 			sprite.scale.x = 1
 		else:
 			sprite.scale.x = -1
