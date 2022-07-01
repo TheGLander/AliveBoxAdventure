@@ -1,3 +1,4 @@
+class_name Tornado
 extends Node2D
 
 
@@ -6,24 +7,27 @@ extends Node2D
 # var b = "text"
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-   $AnimationPlayer.play("turnMeRoundBaby")
+var anim_offet = 0
 
+func fake_sin(x):
+	return (fmod(x, 1) + (fmod(x, 2) - fmod(x, 1)) * (1 - 2 * fmod(x, 1))) * (1 - fmod(x, 4) + fmod(x, 2))
+	#return (x % 1 - (x % 2 - x % 1) * (1 - 2 * (x % 1))) * (1 - x % 4 + x % 2)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(dt):
 	if spinning:
-		spin_factor += dt * max(1, log(spin_factor)) * 3
-	else:
-		spin_factor -= dt * (log(spin_factor) / 2 + 2)
-	spin_factor = clamp(spin_factor, 0.5, 10)
-	$AnimationPlayer.playback_speed = spin_factor
-	if spinee:
-		#var player_size = ((spinee.get_node("CollisionShape2D") as CollisionShape2D).shape as RectangleShape2D).extents * 2
-		#var bottom_y = spinee.position.y + player_size.y
-		#var spin_pos_pow = 1 - (position.y - bottom_y) / $Sprite.texture.get_height()
+		var player_size = ((spinee.get_node("CollisionShape2D") as CollisionShape2D).shape as RectangleShape2D).extents * 2
+		var bottom_y = spinee.position.y + player_size.y
+		var height = $Sprite.texture.get_height() 
+		var pos = position + get_parent().position
+		var spin_pos_pow = 1 - (pos.y - bottom_y) / height
 		#print(spin_pos_pow)
+		spin_factor += dt * max(1, spin_factor) * 10 * spin_pos_pow
+	else:
+		spin_factor -= dt * (log(spin_factor) / 4 + 2)
+	spin_factor = clamp(spin_factor, 3, 10)
+	#$AnimationPlayer.playback_speed = spin_factor
+	if spinee:
 		spinee.accels.remove(spinee.accels.find(spin_vec))
 		spin_vec.y = -spin_factor * 4 * dt
 		#print(spin_factor)
@@ -34,6 +38,9 @@ func _process(dt):
 			spinee.yeet_timeout = 5
 		spinee.accels.append(spin_vec)
 		#print(spinee._acceleration + spin_vec)
+	anim_offet += dt * spin_factor * 3
+	$Sprite.scale.x = sin(anim_offet)
+	$Area2D/CollisionPolygon2D.scale.x = sin(anim_offet)
 
 
 var spinning = false

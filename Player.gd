@@ -2,7 +2,7 @@ class_name Player
 extends Actor
 
 
-const FLOOR_DETECT_DISTANCE = 20.0
+const FLOOR_DETECT_DISTANCE = 120.0
 const VELOCITY_EPSILON = 5.0
 
 export(String) var action_suffix = ""
@@ -45,7 +45,7 @@ func _physics_process(dt):
 	calculate_move_velocity(direction, is_jump_interrupted, dt)
 
 	var snap_vector = Vector2.ZERO
-	if abs(_velocity.y) < 20.0:
+	if direction.y == 0:
 		snap_vector = Vector2.DOWN * FLOOR_DETECT_DISTANCE
 	var is_on_platform = platform_detector.is_colliding()
 	_velocity = move_and_slide_with_snap(
