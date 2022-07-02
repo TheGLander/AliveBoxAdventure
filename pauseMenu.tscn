@@ -1,0 +1,63 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://theme.tres" type="Theme" id=1]
+[ext_resource path="res://PauseMenu.gd" type="Script" id=2]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="ColoredBox" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1.0
+margin_bottom = 1.0
+rect_pivot_offset = Vector2( 1046, -53 )
+color = Color( 0, 0.262745, 0.392157, 0.196078 )
+
+[node name="CenterContainer" type="CenterContainer" parent="ColoredBox"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1.0
+margin_bottom = 1.0
+rect_pivot_offset = Vector2( 1046, -53 )
+
+[node name="CenterContainer" type="VBoxContainer" parent="ColoredBox/CenterContainer"]
+margin_left = 419.0
+margin_top = 222.0
+margin_right = 607.0
+margin_bottom = 379.0
+custom_constants/separation = 20
+
+[node name="Resume" type="Button" parent="ColoredBox/CenterContainer/CenterContainer"]
+margin_right = 188.0
+margin_bottom = 39.0
+text = "Resume"
+
+[node name="Reset" type="Button" parent="ColoredBox/CenterContainer/CenterContainer"]
+margin_top = 59.0
+margin_right = 188.0
+margin_bottom = 98.0
+custom_constants/hseparation = 0
+text = "Reset"
+
+[node name="TotalReset" type="Button" parent="ColoredBox/CenterContainer/CenterContainer"]
+margin_top = 118.0
+margin_right = 188.0
+margin_bottom = 157.0
+text = "Total reset"
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="ColoredBox/CenterContainer"]
+margin_left = 401.0
+margin_top = 253.0
+margin_right = 625.0
+margin_bottom = 349.0
+window_title = ""
+dialog_text = "Really reset?"
+
+[connection signal="pressed" from="ColoredBox/CenterContainer/CenterContainer/Resume" to="." method="_on_Resume_pressed"]
+[connection signal="pressed" from="ColoredBox/CenterContainer/CenterContainer/Reset" to="." method="_on_Reset_pressed"]
+[connection signal="pressed" from="ColoredBox/CenterContainer/CenterContainer/TotalReset" to="." method="_on_TotalReset_pressed"]
+[connection signal="confirmed" from="ColoredBox/CenterContainer/ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]

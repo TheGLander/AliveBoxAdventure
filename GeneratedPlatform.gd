@@ -23,6 +23,7 @@ func set_cloudy(new_cloudy):
 func set_save_platform(new_save_platform):
 	save_platform = new_save_platform
 	$RainbowSprite.visible = save_platform
+	$RainbowBlocker/CollisionShape2D.disabled = false
 
 func get_platform_end():
 	var to_place = Vector2(size.x, 0)
@@ -43,6 +44,30 @@ func add_vines():
 	add_child(vines_ins)
 	vines_ins.position = Vector2(size.x / 2, 0)
 
+var reward = false
+
+func add_reward():
+	reward = true
+	var reward_ins = (load("res://Reward.tscn") as Resource).duplicate(true).instance()
+	reward_ins.position = Vector2(size.x / 2, 0)
+	add_child(reward_ins)
+
+var altar = false
+
+func add_altar():
+	altar = true
+	var altar_ins = (load("res://Altar.tscn") as Resource).duplicate(true).instance()
+	altar_ins.position = Vector2(size.x / 2, 0)
+	add_child(altar_ins)
+
+var exit_portal = false
+
+func add_exit():
+	exit_portal = true
+	var exit_portal_ins = (load("res://ExitPortal.tscn") as Resource).duplicate(true).instance()
+	exit_portal_ins.position = Vector2(size.x / 2, 0)
+	add_child(exit_portal_ins)
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -53,7 +78,8 @@ var touched = false
 func collision(with):
 	#print("%d -> %s to %s" % [platformN, touched, with is Player])
 	if not touched and with is Player:
+		$RainbowBlocker/CollisionShape2D.disabled = true
 		touched = true
 		emit_signal("platform_seen", self)
-		print(rotation_degrees)
-		print(get_platform_end() - position)
+		#print(rotation_degrees)
+		#print(get_platform_end() - position)

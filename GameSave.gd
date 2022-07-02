@@ -4,6 +4,7 @@ extends Node
 var game_seed = randi()
 var save_platform = 0
 var save_platform_coords = Vector2(0, 0)
+var rewards_gotten = 0
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -25,7 +26,8 @@ func save_game():
 	save_game.store_line(to_json({
 		"game_seed": game_seed,
 		"save_platform": save_platform,
-		"save_platform_coords": save_platform_coords
+		"save_platform_coords": save_platform_coords,
+		"rewards_gotten": rewards_gotten
 	}))
 	save_game.close()
 
@@ -50,8 +52,10 @@ func load_game():
 	game_seed = save.game_seed
 	save_platform = save.save_platform
 	save_platform_coords = string_to_vector2(save.save_platform_coords)
+	rewards_gotten = save.rewards_gotten
 	save_game.close()
 
 func reset_game():
 	game_seed = randi()
 	save_platform = 0
+	rewards_gotten = 0

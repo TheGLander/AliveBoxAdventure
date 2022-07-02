@@ -138,7 +138,7 @@ func get_new_animation(is_shooting = false):
 		animation_new += "_weapon"
 	return animation_new
 
-onready var hell = get_tree().root.get_node("Node2D/ParallaxBackground/HellLayer/Hell") as Sprite
+onready var hell = get_tree().root.get_node("Node2D/Game/ParallaxBackground/HellLayer/Hell") as Sprite
 
 func _process(delta):
 	if position.y > hell.position.y:

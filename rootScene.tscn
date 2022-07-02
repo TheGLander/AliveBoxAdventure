@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://GeneratedPlatform.tscn" type="PackedScene" id=2]
@@ -6,9 +6,13 @@
 [ext_resource path="res://SkyFactory.gd" type="Script" id=4]
 [ext_resource path="res://GameSave.gd" type="Script" id=5]
 [ext_resource path="res://win2.png" type="Texture" id=6]
+[ext_resource path="res://theme.tres" type="Theme" id=7]
+[ext_resource path="res://PlatformLabel.gd" type="Script" id=8]
+[ext_resource path="res://pauseMenu.tscn" type="PackedScene" id=9]
+[ext_resource path="res://UI.gd" type="Script" id=10]
 
 [sub_resource type="Gradient" id=1]
-colors = PoolColorArray( 0, 0.132812, 1, 1, 0, 0.90625, 1, 1 )
+colors = PoolColorArray( 0, 0.133333, 1, 1, 0, 0.905882, 1, 1 )
 
 [sub_resource type="GradientTexture" id=2]
 gradient = SubResource( 1 )
@@ -24,37 +28,42 @@ width = 256
 [node name="Node2D" type="Node2D"]
 position = Vector2( 799, 428 )
 
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+[node name="GameSave" type="Node" parent="."]
+script = ExtResource( 5 )
+
+[node name="Game" type="Node2D" parent="."]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="Game"]
 scroll_base_scale = Vector2( 0.4, 1 )
 
-[node name="SkyLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+[node name="SkyLayer" type="ParallaxLayer" parent="Game/ParallaxBackground"]
 motion_mirroring = Vector2( 4000, 0 )
 
-[node name="BackgroundSprite" type="Sprite" parent="ParallaxBackground/SkyLayer"]
+[node name="BackgroundSprite" type="Sprite" parent="Game/ParallaxBackground/SkyLayer"]
 position = Vector2( 4000, 0 )
 rotation = 1.57079
 scale = Vector2( 1, 4000 )
 texture = SubResource( 2 )
 centered = false
 
-[node name="CloudLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+[node name="CloudLayer" type="ParallaxLayer" parent="Game/ParallaxBackground"]
 motion_mirroring = Vector2( 4000, 2048 )
 script = ExtResource( 4 )
 
-[node name="HellLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+[node name="HellLayer" type="ParallaxLayer" parent="Game/ParallaxBackground"]
 motion_mirroring = Vector2( 4000, 0 )
 
-[node name="Hell" type="Sprite" parent="ParallaxBackground/HellLayer"]
+[node name="Hell" type="Sprite" parent="Game/ParallaxBackground/HellLayer"]
 position = Vector2( 4000, 1792 )
 rotation = 1.5708
 scale = Vector2( 1, 4000 )
 texture = SubResource( 4 )
 centered = false
 
-[node name="Player" parent="." instance=ExtResource( 1 )]
+[node name="Player" parent="Game" instance=ExtResource( 1 )]
 position = Vector2( 179, 28 )
 
-[node name="PlayerCamera" type="Camera2D" parent="Player"]
+[node name="PlayerCamera" type="Camera2D" parent="Game/Player"]
 position = Vector2( 39, 18 )
 current = true
 process_mode = 0
@@ -65,15 +74,28 @@ limit_bottom = 2048
 smoothing_enabled = true
 smoothing_speed = 3.0
 
-[node name="PlatformFactory" type="Node2D" parent="."]
+[node name="PlatformFactory" type="Node2D" parent="Game"]
 script = ExtResource( 3 )
 
-[node name="Platform 0" parent="PlatformFactory" instance=ExtResource( 2 )]
+[node name="Platform 0" parent="Game/PlatformFactory" instance=ExtResource( 2 )]
 position = Vector2( 112, 406 )
 
-[node name="GameSave" type="Node" parent="."]
-script = ExtResource( 5 )
-
-[node name="Win2" type="Sprite" parent="."]
-position = Vector2( 203, 52 )
+[node name="Win2" type="Sprite" parent="Game/PlatformFactory/Platform 0"]
+position = Vector2( 91, -354 )
 texture = ExtResource( 6 )
+
+[node name="UI" type="CanvasLayer" parent="."]
+pause_mode = 2
+script = ExtResource( 10 )
+
+[node name="PlatformLabel" type="Label" parent="UI"]
+margin_left = 12.0
+margin_top = 12.0
+margin_right = 204.0
+margin_bottom = 42.0
+theme = ExtResource( 7 )
+text = "Platforms: 0"
+script = ExtResource( 8 )
+
+[node name="PauseMenu" parent="UI" instance=ExtResource( 9 )]
+visible = false
