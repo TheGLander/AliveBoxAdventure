@@ -145,5 +145,5 @@ func _process(delta):
 		get_tree().reload_current_scene()
 	if yeet_timeout > 0:
 		yeet_timeout -= delta
-	if yeet_timeout > 0 and position.y < 0:
+	if yeet_timeout > 0 and position.y < -$CollisionShape2D.shape.extents.y * 2:
 		get_tree().reload_current_scene()

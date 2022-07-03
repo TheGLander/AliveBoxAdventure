@@ -1,11 +1,14 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://theme.tres" type="Theme" id=1]
+[ext_resource path="res://Thanks.gd" type="Script" id=2]
+[ext_resource path="res://GameSave.gd" type="Script" id=3]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 1 )
+script = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -16,10 +19,49 @@ color = Color( 0, 0, 0, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="Label" type="Label" parent="ColorRect/CenterContainer"]
-margin_left = 264.0
-margin_top = 283.0
-margin_right = 760.0
-margin_bottom = 316.0
-text = "Thank you for playing the game!"
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/CenterContainer"]
+margin_left = 212.0
+margin_top = 144.0
+margin_right = 812.0
+margin_bottom = 455.0
+
+[node name="Label" type="Label" parent="ColorRect/CenterContainer/VBoxContainer"]
+margin_right = 600.0
+margin_bottom = 177.0
+rect_min_size = Vector2( 600, 0 )
+text = "Thank you for playing the game!
+This is line, my 1.5th game ever, so hopefully it wasn't too bad!
+
+You can now reset and gain nothing!"
 align = 1
+autowrap = true
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect/CenterContainer/VBoxContainer"]
+margin_top = 181.0
+margin_right = 600.0
+margin_bottom = 211.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="GoBackButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer"]
+margin_top = 215.0
+margin_right = 600.0
+margin_bottom = 254.0
+text = "Go Back"
+
+[node name="MarginContainer2" type="MarginContainer" parent="ColorRect/CenterContainer/VBoxContainer"]
+margin_top = 258.0
+margin_right = 600.0
+margin_bottom = 268.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="TotalResetButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer"]
+margin_top = 272.0
+margin_right = 600.0
+margin_bottom = 311.0
+text = "Total Reset"
+
+[node name="GameSave" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[connection signal="pressed" from="ColorRect/CenterContainer/VBoxContainer/GoBackButton" to="." method="_on_GoBackButton_pressed"]
+[connection signal="pressed" from="ColorRect/CenterContainer/VBoxContainer/TotalResetButton" to="." method="_on_TotalResetButton_pressed"]

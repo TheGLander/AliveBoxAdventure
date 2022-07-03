@@ -62,7 +62,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Alive Box Game"
+config/name="Alive Box Adventure"
 run/main_scene="res://rootScene.tscn"
 config/icon="res://icon.png"
 
